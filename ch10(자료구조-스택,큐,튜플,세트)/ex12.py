@@ -11,3 +11,4 @@ if __name__ == "__main__":
 
     print("사용된 단어의 수: ", len(lineSet))
     print(lineSet)
+    file.close()
