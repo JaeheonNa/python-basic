@@ -47,3 +47,5 @@ print("statementList", statementList)
 
 statementList = statement.split(".")
 print("statementList", statementList)
+
+print("statementList", list(reversed(statementList)))
