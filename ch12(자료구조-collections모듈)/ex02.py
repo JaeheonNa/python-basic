@@ -16,18 +16,31 @@ for i in range(100000):
 end = time.time()
 print("list append: ", end - start)
 
-# print("--" * 5, "pop 성능 테스트", "--" * 5)
-# start = time.time()
-# for i in range(len(deque_test)):
-#     deque_test.pop()
-# end = time.time()
-# print("deque pop: ", end - start)
-#
-# start = time.time()
-# for i in range(len(list_test)):
-#     list_test.pop()
-# end = time.time()
-# print("list pop: ", end - start)
+print("--" * 5, "pop 성능 테스트", "--" * 5)
+start = time.time()
+for i in range(len(deque_test)):
+    deque_test.pop()
+end = time.time()
+print("deque pop: ", end - start)
+
+start = time.time()
+for i in range(len(list_test)):
+    list_test.pop()
+end = time.time()
+print("list pop: ", end - start)
+
+print("--" * 5, "insert 성능 테스트", "--" * 5)
+start = time.time()
+for i in range(100000):
+    deque_test.insert(0,'x')
+end = time.time()
+print("deque popleft: ", end - start)
+
+start = time.time()
+for i in range(100000):
+    list_test.insert(0,'x')
+end = time.time()
+print("list pop(0): ", end - start)
 
 print("--" * 5, "popleft 성능 테스트", "--" * 5)
 start = time.time()
@@ -44,3 +57,4 @@ print("list pop(0): ", end - start)
 
 print("결론1: stack 자료형을 쓸 땐, list가 미세하게 우세.")
 print("결론2: queue 자료형을 쓸 땐, deque가 압도적으로 우세.")
+print("결론3: 특정 index에 삽입할 땐, deque가 압도적으로 우세.")
