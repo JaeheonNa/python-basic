@@ -25,7 +25,7 @@ print(sorted(dict3.items(), key=lambda x: x[1])) # 값 기준 정렬
 
 print('==' * 5, "[OrderedDict를 사용하는 이유-1]", '==' * 5)
 # OrderedDict는 동등성 비교 시 순서를 고려함.
-# Dictionary는 동등성 비교 시 순서를 고려하지 않음.
+# Dictionary는 동등성 비교 시 순서를 고려하지 않음. 논리적 동등.
 dict2 = dict()
 dict2['e'] = 500
 dict2['d'] = 400
