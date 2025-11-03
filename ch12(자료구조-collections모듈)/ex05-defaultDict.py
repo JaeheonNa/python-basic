@@ -1,4 +1,5 @@
 from collections import defaultdict
+
 dic = defaultdict(lambda: 0)
 print(dic['a'])
 print(dic['b'])

@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 def countLetters(words):
     counter = {}
     for word in words:
@@ -14,8 +16,6 @@ def countLetters_setDefault(words):
         counter.setdefault(word, 0)
         counter[word] += 1
     return counter
-
-from collections import defaultdict
 
 def countLetters_defaultdict(words):
     counter = defaultdict(int)
