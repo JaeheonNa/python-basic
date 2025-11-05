@@ -1,12 +1,12 @@
 class Car:
     __color = ''
     __speed = 0
-    count = 0
+    __count = 0
 
     def __init__(self, color):
         self.__color = color
         self.__speed = 0
-        Car.count += 1
+        Car.__count += 1
 
     def getColor(self):
         return self.__color
@@ -14,8 +14,8 @@ class Car:
     def getSpeed(self):
         return self.__speed
 
-    def setColor(self, color):
-        self.__color = color
+    def getCount(self):
+        return self.__count
 
     def setSpeed(self, speed):
         self.__speed = speed
