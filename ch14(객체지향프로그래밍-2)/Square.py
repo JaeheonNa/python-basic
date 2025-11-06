@@ -1,4 +1,4 @@
-class Rectangle:
+class Square:
     __height = 0
     __width = 0
     __area = 0
