@@ -1,9 +1,9 @@
-from Person2 import *
+from Person import *
 
-class Worker(Person2):
+class Worker(Person):
 
     def __init__(self):
-        Person2.__init__(self)
+        Person.__init__(self)
         print("나는 근로자입니다.")
 
     def greeting(self):

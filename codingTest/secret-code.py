@@ -49,20 +49,16 @@ from itertools import combinations
 
 def solution(n, q, ans):
 
-    combis = combinations(range(1, n+1), 5)
+    combis = set(combinations(range(1, n+1), 5))
 
     for i in range(len(ans)):
         correct_answer = set()
         an = ans[i]
         row = q[i]
         for comb in combis:
-            containCnt = 0
-            for num in row:
-                if comb.__contains__(num):
-                    containCnt += 1
-                if containCnt > an:
-                    break
-            if containCnt == an:
+            rowSet = set(row)
+            combSet = set(comb)
+            if len(combSet & rowSet) == an:
                 correct_answer.add(comb)
         combis = correct_answer
 

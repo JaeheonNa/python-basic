@@ -1,4 +1,4 @@
-class Person2(object):
+class Person(object):
     def __init__(self):
         print("나는 사람입니다.")
 
