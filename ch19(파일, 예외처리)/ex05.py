@@ -1,4 +1,4 @@
-writeFilePath = "/Users/jaeheon.na/PycharmProjects/PythonProject/ch19(파일, 예외처리)/text/test-3.txt"
+writeFilePath = "/Users/jaeheon.na/PycharmProjects/PythonProject/ch19(파일, 예외처리)/text/test-03.txt"
 
 file = open(writeFilePath, mode="w", encoding="utf-8")
 file.write("안녕하세요. 반갑습니다.\n")

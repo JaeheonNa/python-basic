@@ -1,4 +1,4 @@
-writeFilePath = "/Users/jaeheon.na/PycharmProjects/PythonProject/ch19(파일, 예외처리)/text/test-3.txt"
+writeFilePath = "/Users/jaeheon.na/PycharmProjects/PythonProject/ch19(파일, 예외처리)/text/test-03.txt"
 
 file = open(writeFilePath, mode="r", encoding="utf-8")
 print("파일 포인터의 현재 위치: ", file.tell())

@@ -26,7 +26,7 @@ finally:
 # file.readline():  한 번에 한 라인을 문자열로 읽어들임.
 # file.readlines(): 여러 라인을 한꺼번에 리스트로 읽어들임. 기본적으로 개행, 빈칸이 포함됨.
 print("1. read() 함수 읽기")
-readFilePath = "/Users/jaeheon.na/PycharmProjects/PythonProject/ch19(파일, 예외처리)/text/test-2.txt"
+readFilePath = "/Users/jaeheon.na/PycharmProjects/PythonProject/ch19(파일, 예외처리)/text/test-02.txt"
 file = open(readFilePath, "r", encoding="utf-8")
 string = file.read()
 print(string)
@@ -34,7 +34,7 @@ file.close()
 print("--" * 10)
 
 print("2. readline() 함수 읽기")
-readFilePath = "/Users/jaeheon.na/PycharmProjects/PythonProject/ch19(파일, 예외처리)/text/test-2.txt"
+readFilePath = "/Users/jaeheon.na/PycharmProjects/PythonProject/ch19(파일, 예외처리)/text/test-02.txt"
 file = open(readFilePath, "r", encoding="utf-8")
 line = file.readline()
 print(line, end='')
@@ -42,7 +42,7 @@ file.close()
 print("--" * 10)
 
 print("3. readlines() 함수 읽기")
-readFilePath = "/Users/jaeheon.na/PycharmProjects/PythonProject/ch19(파일, 예외처리)/text/test-2.txt"
+readFilePath = "/Users/jaeheon.na/PycharmProjects/PythonProject/ch19(파일, 예외처리)/text/test-02.txt"
 file = open(readFilePath, "r", encoding="utf-8")
 lines = file.readlines()
 print(lines)

@@ -1,4 +1,4 @@
-filePath = "/Users/jaeheon.na/PycharmProjects/PythonProject/ch19(파일, 예외처리)/text/test-1.txt"
+filePath = "/ch19(파일, 예외처리)/text/test-01.txt"
 
 try:
     file = open(filePath, mode="r")
