@@ -1,6 +1,42 @@
 def solution(points, routes):
     answer = 0
 
+    allRobotsRoute = []
+    for i in range(len(routes)):
+        iRobotsPointRoute = routes[i]
+        iRobotsRoute = []
+        iRobotsRoute.append(points[iRobotsPointRoute[0]-1].copy())
+        for j in range(1, len(iRobotsPointRoute)):
+            nextPoint = points[iRobotsPointRoute[j]-1]
+            currentPoint = iRobotsRoute[len(iRobotsRoute)-1].copy()
+            while nextPoint != currentPoint:
+                if currentPoint[0] != nextPoint[0]:
+                    if currentPoint[0] > nextPoint[0]:
+                        currentPoint[0] -= 1
+                    else:
+                        currentPoint[0] += 1
+                else:
+                    if currentPoint[1] > nextPoint[1]:
+                        currentPoint[1] -= 1
+                    else:
+                        currentPoint[1] += 1
+                iRobotsRoute.append(currentPoint.copy())
+        allRobotsRoute.append(iRobotsRoute)
+
+    maxTime = 0
+    for robotsRoute in allRobotsRoute:
+        if maxTime < len(robotsRoute):
+            maxTime = len(robotsRoute)
+
+    for time in range(maxTime):
+        currentRobotsPointDict = dict()
+        for robotsRoute in allRobotsRoute:
+            if len(robotsRoute) > time:
+                currentRobotsPointDict[str(robotsRoute[time])] = currentRobotsPointDict.get(str(robotsRoute[time]), 0) + 1
+        for key, value in currentRobotsPointDict.items():
+            if value > 1:
+                answer += 1
+
     return answer
 
 if __name__ == '__main__':
