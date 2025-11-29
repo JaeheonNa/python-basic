@@ -31,7 +31,7 @@ def solution(friends, gifts):
     friendDict = dict()
     for myName in friends:
         me = Friend(myName, friends)
-        history = [history for history in gifts if history.__contains__(myName)]
+        history = [history for history in gifts if myName in history.split()]
         me.setCnt(history)
         friendDict[myName] = me
 
@@ -40,7 +40,7 @@ def solution(friends, gifts):
             getCnt = friendDict[friendsName].friends[myName]
             if giveCnt > getCnt:
                 me.presents += 1
-            elif me.point > friendDict[friendsName].point:
+            elif (giveCnt == getCnt) and (me.point > friendDict[friendsName].point):
                 me.presents += 1
 
     for myName, me in friendDict.items():
