@@ -4,7 +4,6 @@ def checkFigure(nodes, currentNode, rootNode, rootNodeCnt):
     if currentNode == rootNode:
         rootNodeCnt += 1
 
-
     if currentNode not in nodes.keys() or len(nodes[currentNode]) == 0:
         return 1 # 막대 그래프
     elif len(nodes[currentNode]) == 2:
@@ -48,8 +47,6 @@ def solution(edges):
             answer[3] += 1
 
     return answer
-
-
 
 if __name__ == '__main__':
     edges = [[4, 11], [1, 12], [8, 3], [12, 7], [4, 2], [7, 11], [4, 8], [9, 6], [10, 11], [6, 10], [3, 5], [11, 1], [5, 3], [11, 9], [3, 8]]
