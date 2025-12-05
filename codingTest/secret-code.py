@@ -45,7 +45,7 @@
 # 0 ≤ ans[i] ≤ 5
 # 비밀 코드가 존재하지 않는(답이 0인) 경우는 주어지지 않습니다.
 
-from itertools import combinations
+from itertools import combinations # 조합
 
 def solution(n, q, ans):
 

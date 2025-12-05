@@ -32,8 +32,9 @@ print(triples)
 print("--" * 5, "dictionary 정렬", "--" * 5)
 dic1 = {"cups":2, "bags":1, "books":5, "bottles":4, "coins":7}
 print(dic1)
-print(sorted(dic1))
-print(sorted(dic1.keys()))
-print(sorted(dic1.values()))
-print(sorted(dic1.items()))
-print(sorted(dic1, key=dic1.__getitem__)) # 값에 따라 키를 정렬
+print("sorted(dic1): ", sorted(dic1))
+print("sorted(dic1.keys()): ", sorted(dic1.keys()))
+print("sorted(dic1.values()): ", sorted(dic1.values()))
+print("sorted(dic1.items()): ", sorted(dic1.items()))
+print("sorted(dic1, key=dic1.__getitem__): ", sorted(dic1, key=dic1.__getitem__)) # 값에 따라 키를 정렬
+print("sorted(dic1, key=lambda item: dic1[item]): ", sorted(dic1, key=lambda item: dic1[item])) # 값에 따라 키를 정렬\
