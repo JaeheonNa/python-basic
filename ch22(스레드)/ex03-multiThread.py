@@ -1,8 +1,8 @@
 import os
 import time
 import threading
-from Ping import *
-from Diring import *
+from thread.Ping import *
+from thread.Diring import *
 
 print("---싱글 스레드---")
 print("비프음이 다 울리고 난 뒤 콘솔 로그가 찍힘")
