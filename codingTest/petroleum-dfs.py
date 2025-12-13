@@ -1,49 +1,55 @@
 from collections import deque
-import copy
 
-def checkPetroleum(drilling, trialLand, oilId, oilIdCntMap):
+def checkPetroleum(drilling, land, oilId, oilIdCntMap):
     petroleumCnt = 0
-    oil = []
+    oil = set()
 
     while len(drilling) > 0 :
         site = drilling.popleft()
         depth = site[0]
         trial = site[1]
-        if trialLand[depth][trial] == 1 and (depth, trial) not in oil:
+        if land[depth][trial] == 1 and (depth, trial) not in oil:
             petroleumCnt += 1
-            oil.append((depth, trial))
-            if len(trialLand) > depth + 1:
-                drilling.append([trialLand, depth + 1, trial])
+            oil.add((depth, trial))
+            if len(land) > depth + 1:
+                drilling.append([depth + 1, trial])
             if 0 <= depth - 1:
-                drilling.append([trialLand, depth - 1, trial])
-            if len(trialLand[0]) > trial + 1:
-                drilling.append([trialLand, depth, trial + 1])
+                drilling.append([depth - 1, trial])
+            if len(land[0]) > trial + 1:
+                drilling.append([depth, trial + 1])
             if 0 <= trial - 1:
-                drilling.append([trialLand, depth, trial - 1])
+                drilling.append([depth, trial - 1])
 
     for depth, trial in oil:
-        trialLand[depth][trial] = oilId
+        land[depth][trial] = oilId
     oilIdCntMap[oilId] = petroleumCnt
 
 
 def solution(land):
     answer = 0
-    oilId = 1
+    oilId = 2
     trialCnt = len(land[0])
     oilIdCntMap = {}
     for trial in range(trialCnt):
-        trialLand = copy.deepcopy(land)
-        for depth in range(len(trialLand)):
-            if trialLand[depth][trial] == 1:
+        for depth in range(len(land)):
+            if land[depth][trial] == 1:
                 oilId += 1
                 drilling = deque()
                 drilling.append([depth, trial])
-                checkPetroleum(drilling, trialLand, oilId, oilIdCntMap)
+                checkPetroleum(drilling, land, oilId, oilIdCntMap)
+                oilId += 1
 
 
-
-
-
+    for trial in range(trialCnt):
+        encounterOil = set()
+        tempAnswer = 0
+        for depth in range(len(land)):
+            if land[depth][trial] > 1:
+                encounterOil.add(land[depth][trial])
+        for oid in encounterOil:
+            tempAnswer += oilIdCntMap[oid]
+        if tempAnswer > answer:
+            answer = tempAnswer
     return answer
 
 if __name__ == '__main__':
