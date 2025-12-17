@@ -1,0 +1,38 @@
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+todo_data = {
+    1: {
+        "id": 1,
+        "contents" : "실전! FastAPI 섹선 0 수강",
+        "is_done": True
+    },
+    2: {
+        "id": 2,
+        "contents" : "실전! FastAPI 섹선 1 수강",
+        "is_done": False
+    },
+    3: {
+        "id": 3,
+        "contents" : "실전! FastAPI 섹선 2 수강",
+        "is_done": False
+    }
+}
+
+@app.get("/")
+def health_check_handler():
+    return {"ping": "pong"}
+
+
+@app.get("/todos")
+def get_todos_handler(order: str | None = None):
+    todos = list(todo_data.values())
+    if order and order == "DESC":
+        return todos[::-1]
+    return todos
+
+@app.get("/todos/{todo_id}")
+def get_todos_handler(todo_id: int):
+    return todo_data.get(todo_id, dict())
