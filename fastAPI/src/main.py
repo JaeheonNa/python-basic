@@ -1,6 +1,13 @@
-from anyio.to_process import PosArgsT
-from fastapi import FastAPI, Body, HTTPException
+from fastapi import FastAPI, Body, HTTPException, Depends
 from pydantic import BaseModel
+
+from database import repository
+from database.connection import *
+from sqlalchemy.orm import Session
+from typing import List
+from database.orm import Todo
+from schema.request import CreateToDoRequest
+from schema.response import TodoSchema, TodoListSchema
 
 app = FastAPI()
 
@@ -28,29 +35,41 @@ def health_check_handler():
     return {"ping": "pong"}
 
 @app.get("/todos", status_code=200)
-def get_todos_handler(order: str | None = None):
-    todos = list(todo_data.values())
+def get_todos_handler(
+    order: str | None = None,
+    session: Session = Depends(get_db)
+):
+
+    todos: List[Todo] = repository.get_todos(session)
+
     if order and order == "DESC":
         return todos[::-1]
-    return todos
+
+    return TodoListSchema(
+        todos=[TodoSchema.from_orm(todo) for todo in todos]
+    )
 
 @app.get("/todos/{todo_id}", status_code=200)
-def get_todos_handler(todo_id: int):
-    todo = todo_data.get(todo_id)
+def get_todos_handler(
+    todo_id: int,
+    session: Session = Depends(get_db)
+):
+    todo: Todo | None = repository.get_todo_by_todo_id(session, todo_id)
     if todo:
-        return todo
+        return TodoSchema.from_orm(todo)
     else:
         raise HTTPException(status_code=404, detail="ToDo not found")
 
-class createToDoRequest(BaseModel):
-    id: int
-    contents: str
-    is_done: bool
+
 
 @app.post("/todos", status_code=201)
-def create_todo_handler(request: createToDoRequest):
-    todo_data[request.id] = request.dict()
-    return todo_data[request.id]
+def create_todo_handler(
+    request: CreateToDoRequest,
+    session: Session  = Depends(get_db)
+) -> TodoSchema | None:
+    todo: Todo = Todo.create(request)
+    todo: Todo = repository.create_todo(session, todo)
+    return TodoSchema.from_orm(todo)
 
 @app.patch("/todos/{todo_id}", status_code=200)
 def update_todo_handler(
@@ -58,20 +77,28 @@ def update_todo_handler(
     # Body는 해당 필드가 requestBody에 담겨와야 함을 명시함. 반면 todo_id는 PathVariable이어서 이런 작업이 필요 없음.
     # ...은 해당 필드가 필수값이라는 뜻.
     # embed=True는 단일 필드를 json객체로 감싸서 받겠다는 의미.
-    is_done: bool = Body(..., embed=True)
+    is_done: bool = Body(..., embed=True),
+    session: Session = Depends(get_db)
 ):
-    todo = todo_data.get(todo_id)
+    todo: Todo = repository.get_todo_by_todo_id(session, todo_id)
     if todo:
-        todo["is_done"] = is_done
-        return todo
+        todo.done() if is_done else todo.undone()
+        todo: Todo = repository.update_todo(session, todo)
+        return TodoSchema.from_orm(todo)
     else:
         raise HTTPException(status_code=404, detail="ToDo not found")
 
+
 @app.delete("/todos/{todo_id}", status_code=204)
-def delete_todo_handler(todo_id: int):
-    todo = todo_data.pop(todo_id, None)
+def delete_todo_handler(
+    todo_id: int,
+    session: Session = Depends(get_db)
+):
+    todo: Todo = repository.get_todo_by_todo_id(session, todo_id)
     if not todo:
         raise HTTPException(status_code=404, detail="ToDo not found")
+    repository.delete_todo(session, todo_id)
+
 
 # 요청 성공
 # 200 OK            요청 성공, 범용적, GET/POST/PUT/PATCH
