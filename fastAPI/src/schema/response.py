@@ -1,6 +1,5 @@
 from typing import List
-
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class TodoSchema(BaseModel):
     id: int
@@ -8,8 +7,7 @@ class TodoSchema(BaseModel):
     is_done: bool
 
     # sqlalchemy의 orm 객체를 받아서 매핑해주는 설정.
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class TodoListSchema(BaseModel):
     todos: List[TodoSchema]

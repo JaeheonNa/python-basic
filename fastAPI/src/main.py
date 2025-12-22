@@ -13,7 +13,7 @@ app = FastAPI()
 
 @app.get("/")
 def health_check_handler():
-    return {"ping": "pong"}
+    return {"ping":"pong"}
 
 @app.get("/todos", status_code=200)
 def get_todos_handler(
@@ -27,7 +27,7 @@ def get_todos_handler(
         return todos[::-1]
 
     return TodoListSchema(
-        todos=[TodoSchema.from_orm(todo) for todo in todos]
+        todos=[TodoSchema.model_validate(todo) for todo in todos]
     )
 
 @app.get("/todos/{todo_id}", status_code=200)
@@ -37,11 +37,9 @@ def get_todos_handler(
 ):
     todo: Todo | None = repository.get_todo_by_todo_id(session, todo_id)
     if todo:
-        return TodoSchema.from_orm(todo)
+        return TodoSchema.model_validate(todo)
     else:
         raise HTTPException(status_code=404, detail="ToDo not found")
-
-
 
 @app.post("/todos", status_code=201)
 def create_todo_handler(
@@ -50,7 +48,7 @@ def create_todo_handler(
 ) -> TodoSchema | None:
     todo: Todo = Todo.create(request)
     todo: Todo = repository.create_todo(session, todo)
-    return TodoSchema.from_orm(todo)
+    return TodoSchema.model_validate(todo)
 
 @app.patch("/todos/{todo_id}", status_code=200)
 def update_todo_handler(
@@ -65,10 +63,9 @@ def update_todo_handler(
     if todo:
         todo.done() if is_done else todo.undone()
         todo: Todo = repository.update_todo(session, todo)
-        return TodoSchema.from_orm(todo)
+        return TodoSchema.model_validate(todo)
     else:
         raise HTTPException(status_code=404, detail="ToDo not found")
-
 
 @app.delete("/todos/{todo_id}", status_code=204)
 def delete_todo_handler(
