@@ -24,7 +24,7 @@ def get_todos_handler(
     todos: List[Todo] = repository.get_todos(session)
 
     if order and order == "DESC":
-        return todos[::-1]
+        todos = todos[::-1]
 
     return TodoListSchema(
         todos=[TodoSchema.model_validate(todo) for todo in todos]

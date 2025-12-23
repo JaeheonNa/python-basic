@@ -18,7 +18,7 @@ pip install uvicorn
 
 ### - main 파일이 있는 디렉토리로 이동 후 uvicorn을 이용해 fastapi를 구동한다.
 
-(구동) uvicorn main:app
+(구동) uvicorn main:app   
 (구동: 코드 변경 감지시 리로드) uvicorn main:app --reload 
 (종료) Ctrl + c
 
@@ -54,4 +54,8 @@ pip install pytest
 
 pip install httpx
 
-### python package 생성. '경로' 아님 주의!. package는 생성 시 __init__.py 파일이 생성됨. pytest는 파이썬 모듈인 경우에만 파일들을 테스트로 인지하고 코드를 실행함. 이 때 __init__.py가 있어야만 pytest가 정상적으로 경로를 탐색할 수 있음. 
+### python package 생성. '경로' 아님 주의!. package는 생성 시 __init__.py 파일이 생성됨. pytest는 파이썬 모듈인 경우에만 파일들을 테스트로 인지하고 코드를 실행함. 이 때 __init__.py가 있어야만 pytest가 정상적으로 경로를 탐색할 수 있음.
+
+### 모킹 라이브러리 pytest-mock 설치
+
+pip install pytest-mock
