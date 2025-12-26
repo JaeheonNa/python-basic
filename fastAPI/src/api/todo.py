@@ -1,0 +1,89 @@
+from fastapi import FastAPI, Body, HTTPException, Depends, APIRouter
+
+from database.repository import TodoRepository
+from database.orm import Todo
+from schema.request import CreateToDoRequest
+from schema.response import TodoSchema, TodoListSchema
+from typing import List
+
+# main에서 app에 추가해야함.
+router = APIRouter(prefix="/todos")
+
+@router.get("", status_code=200)
+def get_todos_handler(
+    order: str | None = None,
+    todo_repo: TodoRepository = Depends(TodoRepository)
+):
+
+    todos: List[Todo] = todo_repo.get_todos()
+
+    if order and order == "DESC":
+        todos = todos[::-1]
+
+    return TodoListSchema(
+        todos=[TodoSchema.model_validate(todo) for todo in todos]
+    )
+
+@router.get("/{todo_id}", status_code=200)
+def get_todos_handler(
+    todo_id: int,
+    todo_repo: TodoRepository = Depends(TodoRepository)
+):
+    todo: Todo | None = todo_repo.get_todo_by_todo_id(todo_id)
+    if todo:
+        return TodoSchema.model_validate(todo)
+    else:
+        raise HTTPException(status_code=404, detail="ToDo not found")
+
+@router.post("", status_code=201)
+def create_todo_handler(
+    request: CreateToDoRequest,
+    todo_repo: TodoRepository = Depends(TodoRepository)
+) -> TodoSchema | None:
+    todo: Todo = Todo.create(request=request)
+    todo: Todo = todo_repo.create_todo(todo=todo)
+    return TodoSchema.model_validate(todo)
+
+@router.patch("/{todo_id}", status_code=200)
+def update_todo_handler(
+    todo_id: int,
+    # Body는 해당 필드가 requestBody에 담겨와야 함을 명시함. 반면 todo_id는 PathVariable이어서 이런 작업이 필요 없음.
+    # ...은 해당 필드가 필수값이라는 뜻.
+    # embed=True는 단일 필드를 json객체로 감싸서 받겠다는 의미.
+    is_done: bool = Body(..., embed=True),
+    todo_repo: TodoRepository = Depends(TodoRepository)
+):
+    todo: Todo | None = todo_repo.get_todo_by_todo_id(todo_id)
+    if todo:
+        todo.done() if is_done else todo.undone()
+        todo: Todo = todo_repo.update_todo(todo)
+        return TodoSchema.model_validate(todo)
+    else:
+        raise HTTPException(status_code=404, detail="ToDo not found")
+
+@router.delete("/{todo_id}", status_code=204)
+def delete_todo_handler(
+    todo_id: int,
+    todo_repo: TodoRepository = Depends(TodoRepository)
+):
+    todo: Todo = todo_repo.get_todo_by_todo_id(todo_id)
+    if not todo:
+        raise HTTPException(status_code=404, detail="ToDo not found")
+    todo_repo.delete_todo(todo_id)
+
+
+# 요청 성공
+# 200 OK            요청 성공, 범용적, GET/POST/PUT/PATCH
+# 201 CREATE        요청 성공, 새로운 자원 생성, POST
+# 204 NO CONTENT    요청 성공, 응답할 자원 없음, DELETE
+#
+# 요청 실패
+# 400 BAD REQUEST   요청 실패, 요청이 잘못된 경우(query param, body)
+# 401 UNAUTHORIZED  인증 실패
+# 403 FORBIDDEN     권한 문제 또는 잘못된 method
+# 404 NOT FOUND     자원이 없는 경우 또는 잘못된 endpoint
+#
+# 서버 에러
+# 500 INTERNAL SERVER ERROR     범용적인 서버 에러
+# 502 BAD GATEWAY               Reverse Proxy에서 서버의 응답을 처리할 수 없는 경우
+# 503 SERVICE UNAVAILABLE       서버가 요청을 처리할 수 없는 경우
