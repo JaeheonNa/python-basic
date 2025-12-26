@@ -46,8 +46,8 @@ def create_todo_handler(
     request: CreateToDoRequest,
     session: Session  = Depends(get_db)
 ) -> TodoSchema | None:
-    todo: Todo = Todo.create(request)
-    todo: Todo = repository.create_todo(session, todo)
+    todo: Todo = Todo.create(request=request)
+    todo: Todo = repository.create_todo(session=session, todo=todo)
     return TodoSchema.model_validate(todo)
 
 @app.patch("/todos/{todo_id}", status_code=200)
@@ -59,7 +59,7 @@ def update_todo_handler(
     is_done: bool = Body(..., embed=True),
     session: Session = Depends(get_db)
 ):
-    todo: Todo = repository.get_todo_by_todo_id(session, todo_id)
+    todo: Todo | None = repository.get_todo_by_todo_id(session, todo_id)
     if todo:
         todo.done() if is_done else todo.undone()
         todo: Todo = repository.update_todo(session, todo)
