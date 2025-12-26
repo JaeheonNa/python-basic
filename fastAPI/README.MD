@@ -60,3 +60,8 @@ pip install httpx
 ### 모킹 라이브러리 pytest-mock 설치
 
 pip install pytest-mock
+
+### test 방법
+
+1. pytest       
+2. pytest tests/test_main.py::test_create_todo

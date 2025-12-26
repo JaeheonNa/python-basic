@@ -43,3 +43,57 @@ def test_get_todo(test_client, mocker):
     response = test_client.get("/todos/1")
     assert response.status_code == 404
     assert response.json() == {"detail":"ToDo not found"}
+
+def test_create_todo(test_client, mocker):
+    create_spy = mocker.spy(Todo, "create") # Todo객체의 "create"라는 함수를 spy하겠다.
+    mocker.patch("main.repository.create_todo",
+                 return_value=Todo(id=1, contents="todo", is_done=True))
+    body = {
+        "contents":"test",
+        "is_done": False
+    }
+    response = test_client.post("/todos", json=body)
+
+    # spy 객체를 이용한 검증
+    assert create_spy.spy_return.id is None
+    assert create_spy.spy_return.contents == "test"
+    assert create_spy.spy_return.is_done is False
+
+    assert response.status_code == 201
+    assert response.json() == {
+        "id":1, "contents":"todo", "is_done":True
+    }
+
+def test_update_todo(test_client, mocker):
+    # 200
+    undone = mocker.patch.object(Todo, "undone")
+    mocker.patch("main.repository.get_todo_by_todo_id",
+                 return_value=Todo(id=1, contents="todo", is_done=True))
+    mocker.patch("main.repository.update_todo",
+                 return_value=Todo(id=1, contents="todo", is_done=False))
+    response = test_client.patch("todos/1", json={"is_done":False})
+
+    undone.assert_called_once_with()
+    assert response.status_code == 200
+    assert response.json() == {"id": 1, "contents": "todo", "is_done": False}
+
+    # 404
+    mocker.patch("main.repository.get_todo_by_todo_id", return_value=None)
+    response = test_client.patch("todos/1", json={"is_done":True})
+    assert response.status_code == 404
+    assert response.json() == {"detail":"ToDo not found"}
+
+def test_delete_todo(test_client, mocker):
+    # 204
+    mocker.patch("main.repository.get_todo_by_todo_id",
+                 return_value=Todo(id=1, contents="todo", is_done=True)
+                 )
+    mocker.patch("main.repository.delete_todo", return_value=None)
+    response = test_client.delete("/todos/1")
+    assert response.status_code == 204
+
+    # 404
+    mocker.patch("main.repository.get_todo_by_todo_id", return_value=None)
+    response = test_client.delete("/todos/1")
+    assert response.status_code == 404
+    assert response.json() == {"detail": "ToDo not found"}
