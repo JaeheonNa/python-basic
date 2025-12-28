@@ -41,3 +41,6 @@ class UserRepository():
             self.session.commit()
             self.session.refresh(user)
             return user
+
+    def get_user_by_username(self, username: str) -> User | None:
+        return self.session.scalar(select(User).where(User.username == username))

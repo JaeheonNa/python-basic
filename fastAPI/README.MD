@@ -76,6 +76,17 @@ pip install pytest-mock
 
 # 암호화
 
-### bcrypt 설치
+### - bcrypt 설치
 
 pip install bcrypt
+
+### - python-jose 설치(JWT 생성)
+
+pip install python-jose
+
+### key 생성
+
+openssl rand -hex 32
+
+
+ 
