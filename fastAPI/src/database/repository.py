@@ -3,7 +3,7 @@ from typing import List
 from fastapi import Depends
 from sqlalchemy import select, delete
 from sqlalchemy.orm import Session
-from database.orm import Todo
+from database.orm import Todo, User
 from database.connection import get_db
 
 class TodoRepository():
@@ -31,3 +31,13 @@ class TodoRepository():
     def delete_todo(self, todo_id: int):
         self.session.execute(delete(Todo).where(Todo.id == todo_id))
         self.session.commit()
+
+class UserRepository():
+    def __init__(self, session: Session = Depends(get_db)):
+        self.session = session
+
+    def create_user(self, user: User):
+            self.session.add(user)
+            self.session.commit()
+            self.session.refresh(user)
+            return user
