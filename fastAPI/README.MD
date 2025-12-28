@@ -45,6 +45,14 @@ pip install pymysql
 
 pip install cryptography
 
+### - table 생성
+
+from sqlalchemy.schema import CreateTable       
+from database.orm import Todo       
+from database.connection import engine
+
+CreateTable(Todo.__table__).compile(engine)
+
 # TEST
 
 ### Test를 하는 라이브러리, pytest 설치
@@ -65,3 +73,20 @@ pip install pytest-mock
 
 1. pytest       
 2. pytest tests/test_main.py::test_create_todo
+
+# 암호화
+
+### - bcrypt 설치
+
+pip install bcrypt
+
+### - python-jose 설치(JWT 생성)
+
+pip install python-jose
+
+### key 생성
+
+openssl rand -hex 32
+
+
+ 
