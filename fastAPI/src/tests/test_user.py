@@ -87,4 +87,3 @@ def test_user_log_in(test_client, mocker):
     response = test_client.post("/users/log-in", json=body)
     assert response.status_code == 404
     assert response.json() == {"detail": "User not found"}
-
