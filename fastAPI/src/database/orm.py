@@ -3,7 +3,9 @@ from sqlalchemy.orm import declarative_base, relationship
 
 from schema.request import CreateToDoRequest
 
+
 Base = declarative_base()
+
 
 class Todo(Base):
     __tablename__ = "todo"
@@ -18,10 +20,7 @@ class Todo(Base):
 
     @classmethod
     def create(cls, request: CreateToDoRequest):
-        return cls(
-            contents=request.contents,
-            is_done=request.is_done
-        )
+        return cls(contents=request.contents, is_done=request.is_done)
 
     def done(self) -> "Todo":
         self.is_done = True
@@ -30,6 +29,7 @@ class Todo(Base):
     def undone(self) -> "Todo":
         self.is_done = False
         return self
+
 
 class User(Base):
     __tablename__ = "user"
@@ -54,10 +54,4 @@ class User(Base):
 
     @classmethod
     def create(cls, username: str, hashed_password: str):
-        return cls(
-            username=username,
-            password=hashed_password
-        )
-
-
-
+        return cls(username=username, password=hashed_password)

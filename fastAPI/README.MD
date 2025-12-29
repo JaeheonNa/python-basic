@@ -27,6 +27,16 @@ pip install uvicorn
 
 http://127.0.0.1:8000/docs
 
+### - formatter 적용하기
+
+pip install -U black            
+설정 -> 도구 -> black -> '저장 시' 체크
+
+### - 라이브러리 목록 공유
+
+pip freeze > requirements.txt (목록 생성)       
+pip install -r requirements.txt (목록 설치)
+
 # DB 연결
 
 ### - 도커로 MySQL 구동. 패스워드 및 DB명 todos로 지정. todos란 이름의 볼륨을 생성해서 /db 디렉토리에 연결. docker container 명 todos로 지정. 이미지는 mysql:8.0

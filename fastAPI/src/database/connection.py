@@ -3,8 +3,10 @@ from sqlalchemy.orm import sessionmaker
 
 DATABASE_URL = "mysql+pymysql://root:todos@localhost:3306/todos"
 
-engine = create_engine(DATABASE_URL, echo=True) # echo=True: SQL을 로그로 찍는 옵션
+
+engine = create_engine(DATABASE_URL, echo=True)  # echo=True: SQL을 로그로 찍는 옵션
 SessionFactory = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 
 def get_db():
     session = SessionFactory()
