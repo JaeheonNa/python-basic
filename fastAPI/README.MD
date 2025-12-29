@@ -2,7 +2,8 @@
 
 ### - project root dir에서 아래 명령어로 생성됨.
 
-python3.11 -m venv fastAPI
+python3.11 -m venv fastAPI  
+deactivate(해제)
 
 ### - 이후 fastAPI dir로 들어와서 아래 명령어로 가상환경 활성화를 해줘야 함.
 
@@ -19,7 +20,7 @@ pip install uvicorn
 ### - main 파일이 있는 디렉토리로 이동 후 uvicorn을 이용해 fastapi를 구동한다.
 
 (구동) uvicorn main:app   
-(구동: 코드 변경 감지시 리로드) uvicorn main:app --reload 
+(구동: 코드 변경 감지시 리로드) uvicorn main:app --reload    
 (종료) Ctrl + c
 
 ### - 구동한 url에 /docs를 붙이면 swagger가 자동으로 생성된 걸 확인할 수 있다.
@@ -44,6 +45,14 @@ pip install pymysql
 
 pip install cryptography
 
+### - table 생성
+
+from sqlalchemy.schema import CreateTable       
+from database.orm import Todo       
+from database.connection import engine
+
+CreateTable(Todo.__table__).compile(engine)
+
 # TEST
 
 ### Test를 하는 라이브러리, pytest 설치
@@ -59,3 +68,26 @@ pip install httpx
 ### 모킹 라이브러리 pytest-mock 설치
 
 pip install pytest-mock
+
+### test 방법
+
+1. pytest       
+2. pytest tests/test_main.py::test_create_todo
+
+# 암호화
+
+### - bcrypt 설치
+
+pip install bcrypt
+
+### - python-jose 설치(JWT 생성)
+
+pip install python-jose
+
+### key 생성
+
+openssl rand -hex 32
+
+
+
+ 
