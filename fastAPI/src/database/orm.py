@@ -37,6 +37,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(256), nullable=False)
     password = Column(String(256), nullable=False)
+    # email = Column(String(256), nullable=True)
 
     # 가상의 관계만 생성. OneToMany와 같음. User select 시 Todo가 left outer join 돼서 반환 됨.
     # Lazy Loading: 연관된 객체가 실제로 필요할 때 조회. 단, 반복문에서 돌릴 때, 그 때마다 쿼리를 돌림.(N+1)

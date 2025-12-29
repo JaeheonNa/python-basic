@@ -1,13 +1,23 @@
-from database.orm import Todo
-from database.repository import TodoRepository
+from database.orm import Todo, User
+from database.repository import TodoRepository, UserRepository
+from service.user import UserService
 
 #mocker 객체를 fixture로 받으려면, pytest-mock을 설치해야 함.
 def test_get_todos(test_client, mocker):
-    mocker.patch.object(TodoRepository, "get_todos", return_value=[
+    access_token = UserService().create_jwt(username="test")
+    headers = {"Authorization": f"Bearer {access_token}"}
+
+    user = User(id=1, username="test", password="hashed")
+    user.todos = [
         Todo(id=1, contents="FastAPI Section 0", is_done=True),
         Todo(id=2, contents="FastAPI Section 1", is_done=False)
-    ])
-    response = test_client.get("/todos")
+    ]
+    mocker.patch.object(UserRepository,
+                        "get_user_by_username",
+                        return_value=user
+                        )
+
+    response = test_client.get("/todos", headers=headers)
     assert response.status_code == 200
     assert response.json() == {
         "todos" : [
@@ -16,7 +26,7 @@ def test_get_todos(test_client, mocker):
         ]
     }
 
-    response = test_client.get("/todos?order=DESC")
+    response = test_client.get("/todos?order=DESC", headers=headers)
     assert response.status_code == 200
     assert response.json() == {
         "todos": [

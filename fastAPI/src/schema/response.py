@@ -15,6 +15,8 @@ class TodoListSchema(BaseModel):
 class UserSchema(BaseModel):
     id: int
     username: str
+
+    # sqlalchemy의 orm 객체를 받아서 매핑해주는 설정.
     model_config = ConfigDict(from_attributes=True)
 
 class JWTResponse(BaseModel):

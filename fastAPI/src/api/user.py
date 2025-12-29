@@ -1,10 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 
 from database.repository import UserRepository
-from schema.request import SignUpRequest, SignInRequest
+from schema.request import SignUpRequest, SignInRequest, CreateOTPRequest, VerifyOTPRequest
 from schema.response import UserSchema, JWTResponse
+from security import get_access_token
 from service.user import UserService
 from database.orm import User
+from cache import redis_client
 
 # main에서 app에 추가해야함.
 router = APIRouter(prefix="/users")
@@ -42,3 +44,46 @@ def user_log_in_handler(
             raise HTTPException(status_code=401, detail="Not Authorized")
     else:
         raise HTTPException(status_code=404, detail="User not found")
+
+@router.post("/email/otp")
+def create_otp_handler(
+        request: CreateOTPRequest,
+        _: str = Depends(get_access_token),
+        user_service: UserService = Depends(UserService)
+):
+    otp: int = user_service.create_otp()
+    redis_client.set(request.email, otp)
+    redis_client.expire(request.email, 3 * 60) # 3분
+
+    # Todo : send email
+    return {"otp": otp}
+
+@router.post("/email/otp/verify")
+def verify_otp_handler(
+        request: VerifyOTPRequest,
+        backgroundTasks: BackgroundTasks,
+        access_token: str = Depends(get_access_token),
+        user_service: UserService = Depends(UserService),
+        user_repo: UserRepository = Depends(UserRepository)
+):
+    otp: str | None = redis_client.get(request.email)
+    print("otp: ", int(otp))
+    print("request.otp: ", request.otp)
+    if otp is None or int(otp) != request.otp:
+        raise HTTPException(status_code=400, detail="Bad Request")
+
+    username = user_service.decode_jwt(access_token=access_token)
+    user: User | None = user_repo.get_user_by_username(username=username)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Todo save user email
+    # user.email = request.email
+    # user: User = user_repo.create_user(user)
+
+    # backgroundTasks: 별도 스레드로 동작함.
+    backgroundTasks.add_task(
+        user_service.send_email_to_user,
+        email=request.email
+    )
+    return UserSchema.model_validate(user)
