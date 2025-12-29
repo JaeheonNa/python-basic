@@ -10,4 +10,15 @@ class SignUpRequest(BaseModel):
 
 class SignInRequest(BaseModel):
     username: str
+<<<<<<< HEAD
     password: str
+=======
+    password: str
+
+class CreateOTPRequest(BaseModel):
+    email: str
+
+class VerifyOTPRequest(BaseModel):
+    email: str
+    otp: int
+>>>>>>> macbook-pro-m3

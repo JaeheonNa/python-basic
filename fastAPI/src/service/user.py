@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 import bcrypt
 from jose import jwt
 from datetime import datetime, timedelta
+=======
+import time
+
+import bcrypt
+from jose import jwt
+from datetime import datetime, timedelta
+import random
+>>>>>>> macbook-pro-m3
 
 class UserService:
 
@@ -33,4 +42,22 @@ class UserService:
             },
             self.secret_key,
             algorithm=self.jwt_algorithm
+<<<<<<< HEAD
         )
+=======
+        )
+
+    def decode_jwt(self, access_token: str) -> str:
+        payload: dict = jwt.decode(access_token, self.secret_key, algorithms=[self.jwt_algorithm])
+        # Todo check expired
+        return payload["sub"]
+
+    @staticmethod
+    def create_otp() -> int:
+        return random.randint(1000, 9999)
+
+    @staticmethod
+    def send_email_to_user(email: str) -> None:
+        time.sleep(10)
+        print(f"Sending email to {email}!")
+>>>>>>> macbook-pro-m3
