@@ -6,7 +6,8 @@ from sqlalchemy.orm import Session
 from database.orm import Todo, User
 from database.connection import get_db
 
-class TodoRepository():
+
+class TodoRepository:
     def __init__(self, session: Session = Depends(get_db)):
         self.session = session
 
@@ -17,10 +18,10 @@ class TodoRepository():
         return self.session.scalar(select(Todo).where(Todo.id == todo_id))
 
     def create_todo(self, todo: Todo):
-            self.session.add(todo)
-            self.session.commit()
-            self.session.refresh(todo)
-            return todo
+        self.session.add(todo)
+        self.session.commit()
+        self.session.refresh(todo)
+        return todo
 
     def update_todo(self, todo: Todo):
         self.session.add(todo)
@@ -32,15 +33,16 @@ class TodoRepository():
         self.session.execute(delete(Todo).where(Todo.id == todo_id))
         self.session.commit()
 
-class UserRepository():
+
+class UserRepository:
     def __init__(self, session: Session = Depends(get_db)):
         self.session = session
 
     def create_user(self, user: User):
-            self.session.add(user)
-            self.session.commit()
-            self.session.refresh(user)
-            return user
+        self.session.add(user)
+        self.session.commit()
+        self.session.refresh(user)
+        return user
 
     def get_user_by_username(self, username: str) -> User | None:
         return self.session.scalar(select(User).where(User.username == username))

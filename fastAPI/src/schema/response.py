@@ -1,6 +1,7 @@
 from typing import List
 from pydantic import BaseModel, ConfigDict
 
+
 class TodoSchema(BaseModel):
     id: int
     contents: str
@@ -9,8 +10,10 @@ class TodoSchema(BaseModel):
     # sqlalchemy의 orm 객체를 받아서 매핑해주는 설정.
     model_config = ConfigDict(from_attributes=True)
 
+
 class TodoListSchema(BaseModel):
     todos: List[TodoSchema]
+
 
 class UserSchema(BaseModel):
     id: int
@@ -18,6 +21,7 @@ class UserSchema(BaseModel):
 
     # sqlalchemy의 orm 객체를 받아서 매핑해주는 설정.
     model_config = ConfigDict(from_attributes=True)
+
 
 class JWTResponse(BaseModel):
     access_token: str
