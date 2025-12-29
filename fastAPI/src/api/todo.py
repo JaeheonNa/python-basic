@@ -1,19 +1,16 @@
 from fastapi import FastAPI, Body, HTTPException, Depends, APIRouter
 
 <<<<<<< HEAD
-from database.repository import TodoRepository
-from database.orm import Todo
 =======
 from database.repository import TodoRepository, UserRepository
 from database.orm import Todo, User
 >>>>>>> macbook-pro-m3
-from schema.request import CreateToDoRequest
-from schema.response import TodoSchema, TodoListSchema
+from schema.response import TodoSchema
 from typing import List
 
 <<<<<<< HEAD
 =======
-from security import get_access_token
+from common.security import get_access_token
 from service.user import UserService
 
 >>>>>>> macbook-pro-m3

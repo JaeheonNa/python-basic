@@ -1,21 +1,15 @@
 <<<<<<< HEAD
 from fastapi import APIRouter, Depends, HTTPException
 
+=======
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
+
 from database.repository import UserRepository
 from schema.request import SignUpRequest, SignInRequest
 from schema.response import UserSchema, JWTResponse
 from service.user import UserService
 from database.orm import User
-=======
-from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
-
-from database.repository import UserRepository
-from schema.request import SignUpRequest, SignInRequest, CreateOTPRequest, VerifyOTPRequest
-from schema.response import UserSchema, JWTResponse
-from security import get_access_token
-from service.user import UserService
-from database.orm import User
-from cache import redis_client
+from common.cache import redis_client
 >>>>>>> macbook-pro-m3
 
 # main에서 app에 추가해야함.
