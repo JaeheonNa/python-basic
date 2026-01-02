@@ -6,7 +6,7 @@ from schema.request import CreateToDoRequest
 from schema.response import TodoSchema, TodoListSchema
 from typing import List
 
-from security import get_access_token
+from common.security import get_access_token
 from service.user import UserService
 
 # main에서 app에 추가해야함.
@@ -25,7 +25,6 @@ def get_todos_handler(
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     todos: List[Todo] = user.todos
-
     if order and order == "DESC":
         todos = todos[::-1]
 
