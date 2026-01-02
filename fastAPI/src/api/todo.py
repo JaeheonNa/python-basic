@@ -1,22 +1,30 @@
 from fastapi import FastAPI, Body, HTTPException, Depends, APIRouter
 
-from database.repository import TodoRepository
-from database.orm import Todo
+from database.repository import TodoRepository, UserRepository
+from database.orm import Todo, User
 from schema.request import CreateToDoRequest
 from schema.response import TodoSchema, TodoListSchema
 from typing import List
+
+from common.security import get_access_token
+from service.user import UserService
 
 # main에서 app에 추가해야함.
 router = APIRouter(prefix="/todos")
 
 @router.get("", status_code=200)
 def get_todos_handler(
+    access_token = Depends(get_access_token),
     order: str | None = None,
-    todo_repo: TodoRepository = Depends(TodoRepository)
+    todo_repo: TodoRepository = Depends(TodoRepository),
+    user_service: UserService = Depends(UserService),
+    user_repo: UserRepository = Depends(UserRepository),
 ):
-
-    todos: List[Todo] = todo_repo.get_todos()
-
+    username = user_service.decode_jwt(access_token)
+    user: User = user_repo.get_user_by_username(username)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    todos: List[Todo] = user.todos
     if order and order == "DESC":
         todos = todos[::-1]
 
