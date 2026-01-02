@@ -11,7 +11,7 @@ from schema.response import UserSchema, JWTResponse
 from security import get_access_token
 from service.user import UserService
 from database.orm import User
-from cache import redis_client
+from common.cache import redis_client
 
 # main에서 app에 추가해야함.
 router = APIRouter(prefix="/users")
