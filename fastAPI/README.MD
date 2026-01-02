@@ -98,12 +98,7 @@ pip install python-jose
 
 openssl rand -hex 32
 
-<<<<<<< HEAD
-
- 
-=======
 # Redis 설치
 
 pip install redis       
 redis_client = redis.Redis(host="127.0.0.1", port=6380, db=0, encoding="UTF-8", decode_responses=True)
->>>>>>> macbook-pro-m3
