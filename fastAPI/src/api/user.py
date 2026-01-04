@@ -8,7 +8,7 @@ from schema.request import (
     VerifyOTPRequest,
 )
 from schema.response import UserSchema, JWTResponse
-from security import get_access_token
+from common.security import get_access_token
 from service.user import UserService
 from database.orm import User
 from common.cache import redis_client
