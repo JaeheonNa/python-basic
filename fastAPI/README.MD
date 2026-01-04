@@ -102,3 +102,8 @@ openssl rand -hex 32
 
 pip install redis       
 redis_client = redis.Redis(host="127.0.0.1", port=6380, db=0, encoding="UTF-8", decode_responses=True)
+
+# Template 설치
+
+pip install jinja2       
+pip install aiofiles            
