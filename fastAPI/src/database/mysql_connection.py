@@ -1,10 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from config import mysql_url
 
-DATABASE_URL = "mysql+pymysql://root:todos@localhost:3306/todos"
-
-
-engine = create_engine(DATABASE_URL, echo=True)  # echo=True: SQL을 로그로 찍는 옵션
+engine = create_engine(mysql_url, echo=True)  # echo=True: SQL을 로그로 찍는 옵션
 SessionFactory = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
