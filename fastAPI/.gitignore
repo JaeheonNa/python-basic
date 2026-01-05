@@ -3,4 +3,4 @@ include/*
 lib/*
 pyvenv.cfg
 *.pyc
-secrets.json
+./secrets.json
