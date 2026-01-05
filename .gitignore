@@ -3,4 +3,4 @@
 
 *.pyc
 ./fastAPI/secrets.json
-
+secrets.json
