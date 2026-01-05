@@ -59,7 +59,7 @@ pip install cryptography
 
 from sqlalchemy.schema import CreateTable       
 from database.orm import Todo       
-from database.connection import engine
+from database.mysql_connection import engine
 
 CreateTable(Todo.__table__).compile(engine)
 
@@ -106,4 +106,8 @@ redis_client = redis.Redis(host="127.0.0.1", port=6380, db=0, encoding="UTF-8", 
 # Template 설치
 
 pip install jinja2       
-pip install aiofiles            
+pip install aiofiles
+
+# ODM 설치. ORM과 같이 MongoDB의 Document를 Mapping해주는 라이브러리. Object Document Mapping.
+
+pip install odmantic

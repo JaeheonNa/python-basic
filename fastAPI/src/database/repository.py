@@ -4,7 +4,7 @@ from fastapi import Depends
 from sqlalchemy import select, delete
 from sqlalchemy.orm import Session
 from database.orm import Todo, User
-from database.connection import get_db
+from database.mysql_connection import get_db
 
 
 class TodoRepository:
