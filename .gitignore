@@ -2,5 +2,5 @@
 .idea/misc.xml
 
 *.pyc
-./fastAPI/secrets.json
+./secrets.json
 secrets.json
