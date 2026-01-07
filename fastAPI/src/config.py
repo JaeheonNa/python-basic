@@ -34,3 +34,7 @@ mysql_url = get_secret("mysql_url")
 mongo_host = get_secret("mongo.host")
 mongo_port = get_secret("mongo.port")
 mongo_db_name = get_secret("mongo.db")
+
+naver_search_base_url = get_secret("naver.search-base-url")
+naver_client_id = get_secret("naver.client-id")
+naver_client_secret = get_secret("naver.client-secret")

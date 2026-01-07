@@ -111,3 +111,8 @@ pip install aiofiles
 # ODM 설치. ORM과 같이 MongoDB의 Document를 Mapping해주는 라이브러리. Object Document Mapping.
 
 pip install odmantic
+
+
+# http 요청을 보낼 객체 라이브러리 다운
+
+pip install aiohttp
