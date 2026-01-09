@@ -47,6 +47,6 @@ class NaverBookScraper:
 
 if __name__ == "__main__":
     scraper = NaverBookScraper()
-    results = asyncio.run(scraper.search("고양이", 10, 2))
+    results = asyncio.run(scraper.search("고양이", 5, 2))
     print(results)
     print(len(results))
