@@ -1,0 +1,7 @@
+pyvenv.cfg
+*.pyc
+./secrets.json
+secrets.json
+bin
+include
+lib
